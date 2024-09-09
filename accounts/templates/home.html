@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Header -->
+    <header style="margin-top: 100px;">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <!-- You can add a header title or description here if needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% for article in articles %}
+                    <!-- Post preview -->
+                    <div class="post-preview d-flex {% if forloop.counter0|divisibleby:2 %}flex-row{% else %}flex-row-reverse{% endif %}">
+                        {% if article.article_photo %}
+                            <div class="post-image">
+                                <img src="{{ article.article_photo.url }}" alt="{{ article.article_name }}">
+                            </div>
+                        {% endif %}
+                        <div class="post-content">
+                            <a href="{% url 'article_detail' article.id %}">
+                                <h2 class="post-title">{{ article.article_name }}</h2>
+                                <h3 class="post-subtitle">{{ article.article_body|slice:":100" }}...</h3>  <!-- Display a preview of the article body -->
+                            </a>
+                            <p class="post-meta">
+                                Posted by {{ article.author_name }} on {{ article.published_at|date:"F j, Y" }}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Divider -->
+                    <hr class="my-4" />
+                {% endfor %}
+                
+                <!-- Pager -->
+                <div class="d-flex justify-content-between mb-4">
+                    {% if page_obj.has_previous %}
+                        <a href="page=1" class="btn btn-primary">First</a>
+                        <a href="page={{ page_obj.previous_page_number }}" class="btn btn-primary">Previous</a>
+                    {% endif %}
+                    
+                    {% if page_obj.has_next %}
+                        <a href="page={{ page_obj.next_page_number }}" class="btn btn-primary">Next</a>
+                        <a href="page={{ page_obj.paginator.num_pages }}" class="btn btn-primary">Last</a>
+                    {% endif %}
+                </div>
+                
+                <!-- Back to top -->
+                <div class="d-flex justify-content-end mb-4">
+                    <a href="#" style="background-color: rgb(103, 185, 185); color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Back on top ⬆️</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .container {
+            max-width: 1200px; /* Adjust width here */
+        }
+
+        .post-preview {
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        
+        .post-image {
+            flex: 1;
+            max-width: 30%;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: auto;
+            max-height: 200px; /* Adjust height if needed */
+            object-fit: contain; /* Ensures the full image fits within the container */
+        }
+
+        .post-content {
+            flex: 2;
+            padding: 10px;
+        }
+
+        .post-content a {
+            color: inherit; /* Inherit the color from the parent element */
+            text-decoration: none;
+        }
+
+        .post-content a:hover {
+            color: #36c9bc; /* Cyan color on hover */
+        }
+
+        .post-title {
+            font-size: 1.75rem; /* Increase font size */
+        }
+
+        .post-subtitle {
+            font-size: 1.4rem; /* Increase font size */
+        }
+
+        h2, h3, p {
+            font-size: 1.2rem; /* Adjust font size as needed */
+        }
+    </style>
+{% endblock %}

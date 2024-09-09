@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 style="margin-top: 100px; text-align: center;">List of Authors</h1>
+                <table class="table table-bordered w-100">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sl No</th>
+                            <th scope="col">Author Name</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for author in authors %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ author.name }}</td>
+                            <td>{{ author.details }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

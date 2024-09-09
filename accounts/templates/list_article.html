@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+        a {
+            color: inherit; /* Inherit color from parent element or set a specific color */
+            text-decoration: none; /* Remove underline */
+        }
+
+        /* Hover effect for article links */
+        .post-preview a:hover {
+            color: #36c9bc; /* Change color to #36c9bc (cyan-like color) when hovered */
+            text-decoration: none; /* Ensure underline doesn't appear */
+        }
+
+        /* Additional styles for the content */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box; /* Ensure padding is included in element's total width and height */
+        }
+
+        .post-preview {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: calc(33.333% - 20px); /* 3 cards per row with space between them */
+            min-height: 300px; /* Increase min-height to provide more space for content */
+            border: 1px solid #ddd;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: white;
+            box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+        }
+
+        .post-preview img {
+            width: 90%;
+            height: 220px; /* Fixed height for uniform size */
+            object-fit: cover; /* Cover the container while maintaining aspect ratio */
+        }
+
+        .post-title {
+            margin-top: 10px;
+        }
+
+        .article-body-preview {
+            flex-grow: 1; /* Allow this part to take up available space */
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px; /* Add margin to ensure space between the content and buttons */
+        }
+
+        .btn-group button {
+            padding: 10px 20px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-group .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-group .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 9px;
+            margin-top: 40px;
+        }
+
+        .pagination a {
+            padding: 7px 15px;
+            font-size: 14px;
+            text-decoration: none;
+            color: white;
+            background-color: rgb(19, 159, 159);
+            border: 1px solid rgb(21, 165, 165);
+            border-radius: 12px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination a.active {
+            background-color: #10555e;
+            color: white;
+            border-color: #00bcd4;
+        }
+
+        .pagination a:hover {
+            background-color: #00bcd4;
+        }
+    </style>
+
+    <div class="container position-relative px-4 px-lg-5" style="margin-top: 100px;">
+        <div class="card-container">
+            {% if articles %}
+                {% for article in articles %}
+                <div class="post-preview">
+                    <a href="{% url 'article_detail' article.id %}">
+                        {% if article.article_photo %}
+                            <img src="{{ article.article_photo.url }}" alt="{{ article.article_name }}">
+                        {% endif %}
+                        <h2 class="post-title">{{ article.article_name }}</h2>
+                        <p class="article-body-preview">{{ article.article_body|slice:":100" }}....</p>
+                        <p class="post-meta">
+                            Posted by {{ article.author_name }} on {{ article.published_at|date:"F j, Y" }}
+                        </p>
+                    </a>
+                    <div class="btn-group">
+                        <form action="{% url 'delete' article.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        <form action="{% url 'edit' article.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No articles found.</p>
+            {% endif %}
+        </div>
+
+        <!-- Pagination controls -->
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a href="?page={{ num }}" class="active">{{ num }}</a>
+                {% else %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Header -->
+    <header style="margin-top: 120px;">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <!-- You can add a header title or description here if needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Post Content -->
+                <div class="post-preview">
+                    {% if article.article_photo %}
+                        <img src="{{ article.article_photo.url }}" alt="{{ article.article_name }}" class="article-photo">
+                    {% endif %}
+                    <h2 class="post-title">{{ article.article_name }}</h2>
+                    <p class="post-meta">
+                        Posted by {{ article.author_name }} on {{ article.published_at|date:"F j, Y" }}
+                    </p>
+                    <p class="post-body">{{ article.article_body }}</p> <!-- Full article body -->
+                </div>
+                <!-- Divider -->
+                <hr class="my-4" />
+                <!-- Scroll to Top Button -->
+                <div id="scroll-to-top" style="display: none;">
+                    Back on top ⬆️
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .article-photo {
+            width: 100%; /* Ensures the image takes up the full width of the container */
+            max-width: 100%; /* Prevents the image from exceeding the container width */
+            height: auto; /* Maintains aspect ratio */
+            margin-bottom: 20px; /* Adds spacing below the image */
+        }
+
+        .post-title {
+            font-size: 2rem; /* Adjust the size as needed */
+            margin-top: 20px; /* Space above the title */
+        }
+
+        .post-meta {
+            font-size: 0.9rem; /* Smaller font size for meta info */
+            color: #555; /* Lighter color for meta info */
+        }
+
+        .post-body {
+            font-size: 1rem; /* Font size for the body text */
+            line-height: 1.6; /* Line height for readability */
+        }
+
+        #scroll-to-top {
+            background-color: rgb(103, 185, 185);
+            color: white;
+            padding: 5px 10px; /* Smaller padding */
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block; /* Fit to text size */
+            text-align: center; /* Center text */
+            position: fixed; /* Fixed position */
+            bottom: 20px; /* Distance from bottom */
+            right: 20px; /* Distance from right */
+            font-size: 0.9rem; /* Adjust font size */
+            z-index: 1000; /* Ensures it is above other content */
+            transition: opacity 0.3s ease; /* Smooth transition for visibility */
+        }
+
+        #scroll-to-top:hover {
+            background-color: rgb(85, 156, 156);
+        }
+    </style>
+
+    <script>
+        // Get the button
+        var scrollToTopButton = document.getElementById('scroll-to-top');
+
+        // Show or hide the button based on scroll position
+        window.onscroll = function() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopButton.style.display = 'inline-block'; // Show button
+            } else {
+                scrollToTopButton.style.display = 'none'; // Hide button
+            }
+        };
+
+        // Scroll to the top of the page when the button is clicked
+        scrollToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+{% endblock %}

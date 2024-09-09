@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Author List{% endblock %}
+
+{% block content %}
+<h1 class="mb-4" style="background-color: #f8f9fa; padding: 10px; border: 3px solid black; text-align: center;">Author List</h1>
+<table class="table table-light" style="border: 3px solid black; border-collapse: collapse; margin-top: 20px;">
+    <thead class="thead-dark">
+        <tr>
+            <th style="border: 3px solid black;">Name</th>
+            <th style="border: 3px solid black;">Details</th>
+            <th style="border: 3px solid black;">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for author in authors %}
+        <tr>
+            <td style="border: 3px solid black;">{{ author.name }}</td>
+            <td style="border: 3px solid black;">{{ author.details }}</td>
+            <td>
+                <form action="{% url 'delete_author' author.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm rounded-pill">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

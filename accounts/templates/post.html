@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- <header class="masthead" style="background-image: url('assets/img/contact-bg.jpg')"></header> -->
+    <div class="container position-relative px-4 px-lg-5"  style="margin-top: 100px;">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Add Author</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }} <!-- Renders the form fields as paragraph elements -->
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
