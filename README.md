@@ -1,4 +1,4 @@
-This is a beginner level, simple Django-based blog application which uses CRUD operations , that allows users to register, log in, and create and manage articles. The application includes features for user authentication, article management, author management, and OTP-based password recovery via SMTP email.
+This is a Django-based blog application which uses CRUD operations , that allows users to register, log in, and create and manage articles. The application includes features for user authentication, article management, author management, and OTP-based password recovery via SMTP email.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 Features
 1. User Authentication:
